@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `MailingList` tinyint(1) NOT NULL,
   `FirstName` varchar(50) NOT NULL,
   `LastName` varchar(50) NOT NULL,
-  `Email` varchar(100) NOT NULL,
+  `Email` varchar(100) NOT NULL UNIQUE KEY,
   `Password` varchar(64) NOT NULL,
   `PhoneNumber` varchar(12) NOT NULL,
   `Address` varchar(100) NOT NULL,
