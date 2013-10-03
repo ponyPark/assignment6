@@ -19,7 +19,7 @@ class phpapi {
 		$fname = $_POST['fname'];
 		$lname = $_POST['lname'];
 		$email = $_POST['email'];
-		$pw = $_POST['pw'];
+		$pw = hash(md5, $_POST['pw']);
 		$phone = $_POST['phone'];
 		$address = $_POST['address'];
 		$city = $_POST['city'];
