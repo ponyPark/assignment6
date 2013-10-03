@@ -1,7 +1,11 @@
 <? 
 
 include 'phpapi.php';
-$phpInit = new phpapi;
+
+
+
+$phpInit = new phpapi();
+$phpInit->addUser();
 
 
 ?>

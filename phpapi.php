@@ -1,17 +1,16 @@
 <?
-class phpapi{
 
-	function addUser(){
-		//this will be called when a user is signing up
-		echo('TEST');
+
+class phpapi {
+
+    function phpapi() {
+        echo('made');
+    }
+
+	public function addUser(){
+		echo('addUser');	
+	
 	}
-	function verifyUser(){
-		//this will be called when a user attempts to log into the system
-
-	}
-
-
-
 
 }
 
