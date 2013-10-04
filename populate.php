@@ -2,50 +2,37 @@
 // Process the file if the submit button was clicked
 if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {   
-    // Get the table and file names from the form
-    $table_name = $_POST['table_name'];
-    $file_name = $_FILES["file"]["tmp_name"];
+    // Get the type being submitted, CSV or JSON
+    $fileType = $_POST["fileType"];
     
-    // Open the CSV file and populate the database.
-    $row = 1;
-    if (($handle = fopen($file_name, "r")) !== FALSE)
+    // Connect to the database
+    $con = mysql_connect("localhost", "cupcake", "cupcake");
+    if (!$con)
+        die('Could not connect: ' . mysql_error());
+    mysql_select_db("CustomCupcakes", $con);
+    
+    if ($fileType === "CSV")
     {
-        // Connect to the database
-        $con = mysql_connect("localhost", "cupcake", "cupcake");
-        if (!$con)
-            die('Could not connect: ' . mysql_error());
-        mysql_select_db("CustomCupcakes", $con);
-        
-        // Loop through the file
-        while (($data = fgetcsv($handle)) !== FALSE)
-        {
-            $num = count($data);
-            // If getting the first row in the file, then copy the $data array
-            // in order to remember what the column names were. Otherwise, 
-            // it's a row with data, so add it to the database. Break and 
-            // return an error if one of the queries fails.
-            if ($row == 1)
-                $columns = $data;
-            else
-            {
-                if (!addToDatabase(array_combine($columns, $data), $table_name))
-                {
-                    $error = true;
-                    break;
-                }
-            }
-            $row++;
-        }
+        // Get the table and file names from the form
+        $tableName = $_POST["tableName"];
+        $fileName = $_FILES["file"]["tmp_name"];
 
-        if ($error === true)
-            echo "<h2>There was an error executing a query.</h2>";
+        // Parse the CSV file and populate the database
+        if (!parseCSV($tableName, $fileName))
+            echo "<h2>Error populating the database with the CSV file.</h2>";
         else
             echo "<h2>Population successful.</h2>";
-        fclose($handle);
     }
-    else
+    else if ($fileType === "JSON")
     {
-        echo "<h2>There was an error opening the CSV file.</h2>";
+        // Get the file name from the form
+        $fileName = $_FILES["file"]["tmp_name"];
+
+        // // Parse the CSV file and populate the database
+        // if (!parseJSON($fileName))
+        //     echo "<h2>There was an error parsing the JSON file.</h2>";
+        // else
+        //     echo "<h2>Population successful.</h2>";
     }
 }
 ?>
@@ -56,10 +43,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     </head>
     
     <body>
+        <h3>JSON Conversion</h3>
+        <form method="post" enctype="multipart/form-data">
+            JSON File:
+            <input type="file" name="file">
+            
+            <button type="submit" name="fileType" value="JSON">Submit</button>
+        </form>
+
         <h3>CSV Conversion</h3>
         <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="fileType" value="csv">
+
             Name:
-            <select name="table_name">
+            <select name="tableName">
                 <option value="Users">Users</option>
                 <option value="Favorites">FavoriteCupcakes</option>
                 <option value="FavoriteToppings">ToppingsBridge</option>
@@ -68,10 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             CSV File:
             <input type="file" name="file">
             
-            <input type="submit">
+            <button type="submit" name="fileType" value="CSV">Submit</button>
         </form>
     </body>
 </html>
+
+
 
 <?php
 // FUNCTIONS
@@ -90,6 +89,7 @@ function fixValues(&$value, $key)
     $value = "'" . mysql_real_escape_string($value) . "'";
 }
 
+
 // Add a row into $table using the values in $data
 function addToDatabase($data, $table)
 {
@@ -97,18 +97,18 @@ function addToDatabase($data, $table)
     array_walk($data, "fixValues");
 
     // Create the appropriate query for the specified table
-    if ($table == "Users")
+    if ($table === "Users")
     {
         $query = "INSERT INTO $table (UserID, MailingList, FirstName, LastName, 
             Address, City, State, ZipCode, Email, Password, PhoneNumber) 
             VALUES (" . implode(",", $data) . ")";
     }
-    else if ($table == "Favorites")
+    else if ($table === "Favorites")
     {
         $query = "INSERT INTO $table (FavoriteID, UserID, CakeID, FrostingID, 
             FillingID) VALUES (" . implode(",", $data) . ")";
     }
-    else if ($table == "FavoriteToppings")
+    else if ($table === "FavoriteToppings")
     {
         $query = "INSERT INTO $table (FavoriteToppingsID, FavoriteID, ToppingsID) 
             VALUES (" . implode(",", $data) . ")";
@@ -119,5 +119,49 @@ function addToDatabase($data, $table)
         return true;
     else
         return false;
+}
+
+
+// Open the CSV file and populate the database. Return true on success or 
+// false on error.
+function parseCSV($tableName, $fileName)
+{
+    if (empty($tableName) || empty($fileName)) return false;
+
+    $success = true;
+
+    // Open the file
+    $row = 1;
+    if (($handle = fopen($fileName, "r")) !== FALSE)
+    {
+        
+        // Loop through the file
+        while (($data = fgetcsv($handle)) !== FALSE)
+        {
+            $num = count($data);
+            // If getting the first row in the file, then copy the $data array
+            // in order to remember what the column names were. Otherwise, 
+            // it's a row with data, so add it to the database. Break and 
+            // return an error if one of the queries fails.
+            if ($row == 1)
+                $columns = $data;
+            else
+            {
+                if (!addToDatabase(array_combine($columns, $data), $tableName))
+                {
+                    $success = false;
+                    break;
+                }
+            }
+            $row++;
+        }
+        fclose($handle);
+    }
+    else
+    {
+        $success = false;
+    }
+
+    return $success;
 }
 ?>
