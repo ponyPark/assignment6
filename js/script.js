@@ -4,15 +4,15 @@ function init() {
     var flavorList = document.getElementById("flavor");
     var favList = document.getElementById("favUl");
     var fillingList = document.getElementById("filling");
-    var icingList = document.getElementById("icing");
+    var frostingList = document.getElementById("frosting");
     var flavListSelection = flavorList.getElementsByTagName("img");
     var favListSelection = favList.getElementsByTagName("img");
     var fillingListSelection = fillingList.getElementsByTagName("img");
-    var icingListSelection = icingList.getElementsByTagName("img");
+    var frostingListSelection = frostingList.getElementsByTagName("img");
     //Test data to be inserted in
     generateList(flavorList);
     generateList(fillingList);
-    generateList(icingList);
+    generateList(frostingList);
 
     function generateList(input) {
         for (var i = 0; i < 10; i++) {
@@ -70,10 +70,10 @@ function init() {
             }
             e.target.className = "selected";
         }
-        if (e.target.parentNode.parentNode.id === "icing") {
+        if (e.target.parentNode.parentNode.id === "frosting") {
             var counter = 0;
-            for (var i = 0; i < icingListSelection.length; i++) {         
-                    icingListSelection[i].className = "";
+            for (var i = 0; i < frostingListSelection.length; i++) {         
+                    frostingListSelection[i].className = "";
                 }            
             e.target.className = "selected";
         }
