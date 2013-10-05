@@ -1,0 +1,116 @@
+/*BAM Software CSS for CustomCupcakes 
+
+October, 2013*/
+
+html{
+	font-family: 'Cantarell', sans-serif;
+	background-image: url(ricepaper_v3.png);
+	/*Font is from google fonts */
+
+
+}
+
+#signin{
+
+	float:right;
+	border: 3px solid black;
+	background-color: #FFDB4E;
+
+	
+
+}
+input{
+
+	/*display:block;*/
+	width: 150px;
+	margin: 15px 15px 15px 15px;
+	
+
+}
+select{
+	margin-left:auto;
+	margin-right: auto;
+	margin: 15px 15px 15px 15px;
+}
+
+
+.submitButton{
+
+	width:60px;
+
+}
+
+.mailList{
+
+	display:inline;
+	width:10px;
+	margin: 1px 1px 1px 1px;
+}
+
+
+#createAcct{
+	width:45%;
+	float:right;
+	margin-top: 100px;
+	margin-right: -400px;
+	border: 5px solid black;
+	padding-bottom: 20px;
+	background-color: #27E1FF;
+
+}
+
+#createAccount{
+	width:80%;
+margin-left: auto;
+margin-right: auto;
+
+}
+
+
+
+h1{
+	margin-left: 20px;
+	
+}
+
+
+
+#logoandslogan{
+
+	position: absolute;
+	border: 5px solid black;
+	width: 40%;
+	top: 130px;
+	margin-left: 10px;
+	background-color: #FF5A4E;
+	padding-bottom: 10px;
+
+}
+
+#logo{
+	display: block;
+	margin-left: auto;
+	margin-right:auto;
+	margin-top: 15px;
+
+}
+
+h2{
+
+	border: 2px solid black;
+	padding: 4px 4px 4px 4px;
+	margin-left: 20px;
+	width: 80%;
+	
+
+}
+
+
+
+
+
+
+
+
+
+
