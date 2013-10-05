@@ -113,6 +113,29 @@ class phpapi {
 		}	        		
         return true;
 	}
+		
+	public function getFavorites()
+	{
+		
+	}
+	
+	public function getCakeOptions()
+	{
+	
+	}
+	
+	public function addOrder()
+	{
+	
+	}
+
+	public function getSalesInformation()
+	{
+
+	}
+	
+	
+	
 }
 
 ?>
