@@ -28,11 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         // Get the file name from the form
         $fileName = $_FILES["file"]["tmp_name"];
 
-        // // Parse the CSV file and populate the database
-        // if (!parseJSON($fileName))
-        //     echo "<h2>There was an error parsing the JSON file.</h2>";
-        // else
-        //     echo "<h2>Population successful.</h2>";
+        // Parse the JSON file and populate the database
+        if (!parseJSON($fileName))
+            echo "<h2>Error populating the database with the JSON file.</h2>";
+        else
+            echo "<h2>Population successful.</h2>";
     }
 }
 ?>
@@ -43,6 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     </head>
     
     <body>
+        <p>Instructions: First put in the JSON file and click submit. Then do
+            the CSV files. If you try to do some of the CSV ones first, it will
+            fail since there are foreign key constraints.</p>
         <h3>JSON Conversion</h3>
         <form method="post" enctype="multipart/form-data">
             JSON File:
@@ -73,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 
 <?php
-// FUNCTIONS
+/* FUNCTIONS */
 
 // This function will be applied to the data array that is passed into the 
 // addToDatabase function. It escapes any characters that need to be escaped
@@ -106,12 +109,32 @@ function addToDatabase($data, $table)
     else if ($table === "Favorites")
     {
         $query = "INSERT INTO $table (FavoriteID, UserID, CakeID, FrostingID, 
-            FillingID) VALUES (" . implode(",", $data) . ")";
+            FillingID, Name) VALUES (" . implode(",", $data) . ")";
     }
     else if ($table === "FavoriteToppings")
     {
         $query = "INSERT INTO $table (FavoriteToppingsID, FavoriteID, ToppingsID) 
             VALUES (" . implode(",", $data) . ")";
+    }
+    else if ($table === "Cakes")
+    {
+        $query = "INSERT INTO $table (CakeID, Flavor, Img_Url) VALUES (" . 
+            implode(",", $data) . ")";
+    }
+    else if ($table === "Frosting")
+    {
+        $query = "INSERT INTO $table (FrostingID, Flavor, Img_Url) VALUES (" . 
+            implode(",", $data) . ")";
+    }
+    else if ($table === "Fillings")
+    {
+        $query = "INSERT INTO $table (FillingID, Flavor, RGB) VALUES (" . 
+            implode(",", $data) . ")";
+    }
+    else if ($table === "Toppings")
+    {
+        $query = "INSERT INTO $table (ToppingsID, Flavor) VALUES (" . 
+            implode(",", $data) . ")";
     }
 
     // Try to execute the query; return true on success or false on error
@@ -156,6 +179,51 @@ function parseCSV($tableName, $fileName)
             $row++;
         }
         fclose($handle);
+    }
+    else
+    {
+        $success = false;
+    }
+
+    return $success;
+}
+
+
+// Open the JSON file and populate the database. Return true on success or 
+// false on error.
+function parseJSON($fileName)
+{
+    if (empty($fileName)) return false;
+
+    $success = true;
+
+    // Open the file
+    $row = 1;
+    if (($handle = file_get_contents($fileName)) !== FALSE)
+    {
+        $json = (array) json_decode($handle);
+        $json = (array) $json['menu'];
+
+        // Loop through each table
+        foreach ($json as $table => $data)
+        {
+            $index = 1;
+            // Loop through all the rows in each table
+            foreach ($data as &$row)
+            {
+                // Convert to an array, then add an index to the array.
+                $row = (array) $row;
+                array_unshift($row, $index);
+                $index++;
+
+                // Add the row to the database.
+                if (!addToDatabase($row, ucfirst($table)))
+                {
+                    $success = false;
+                    break;
+                }
+            }
+        }
     }
     else
     {
