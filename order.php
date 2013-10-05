@@ -38,10 +38,10 @@
             <ul id="filling">
             </ul>
         </div>
-        <h4>Icing</h4>
+        <h4>Frosting</h4>
         <!--The ul element will be injected with list elements from javascript-->
         <div class="selectorBox">
-            <ul id="icing">
+            <ul id="frosting">
             </ul>
         </div>
         <fieldset class="toppingGroup">
@@ -91,7 +91,7 @@
            <ul>
                <li id="cupcakeFlavor">Cupcake Flavor:</li>
                <li id="cupcakeFilling">Fillings:</li>
-               <li id="cupcakeIcing">Icing:</li>
+               <li id="cupcakeFrosting">Frosting:</li>
                <li id="cupcakeTopping">Toppings:</li>
            </ul>
           <button id="saveFavorite" type="button">Save</button>
