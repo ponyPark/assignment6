@@ -82,13 +82,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 // addToDatabase function. It escapes any characters that need to be escaped
 // then adds quotes around the whole thing. If the field is the password
 // field, then also hash it. If the field is the OnMailingList field, change
-// yes's to 1 and no's to 0 to fit the database schema.
+// yes's to 1 and no's to 0 to fit the database schema. If the field is 
+// the phone number, remove everything except digits.
 function fixValues(&$value, $key)
 {
     if ($key === "Password")
         $value = hash(md5, $value);
     else if ($key === "OnMailingList")
         $value = (($value === "yes") ? 1 : 0);
+    else if ($key === "TelephoneNumber")
+        $value = preg_replace("/[^0-9]/", "", $value);
     $value = "'" . mysql_real_escape_string($value) . "'";
 }
 
