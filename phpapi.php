@@ -74,12 +74,31 @@ class phpapi {
 			session_start();
 			$_SESSION['logged'] = true;
 			$_SESSION['userEmail'] = $info['Email'];
+			//Added the user to the session since we use
+			//that for adding favorites, etc.
+			$_SESSION['user'] = $info['UserID'];
 			mysql_close($con);
 			echo($info['Privilege']);
 			header ('Location: order.php');	
 		}
 
 		
+	}
+	
+	public function addFavorites()
+	{
+		$con = mysql_connect("localhost", "cupcake", "cupcake");
+		if(!$con){
+			die('Could not connect: ' . mysql_error());
+		}
+		mysql_select_db("CustomCupcakes", $con)
+		or die("Unable to select database: " . mysql_error());
+		$user = $_SESSION['user'];
+		$filling = $_POST['fillingID'];
+		$frosting = $_POST['frostingID'];
+		$cake = $_POST['CakeID'];
+		$favName = $_POST['favoriteName'];
+		//Need to do toppings, depends on how GUI formats it.
 	}
 
 }
