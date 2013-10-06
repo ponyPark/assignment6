@@ -196,7 +196,7 @@ class phpapi {
 		$result = mysql_query($query);
 
         //Change mysql result to array so that it can be exported in JSON.
-        $rows = mysql_fetch_assoc($result);
+        $rows = mysql_fetch_assoc($result));
         return json_encode($rows);
 
 	}
@@ -208,7 +208,7 @@ class phpapi {
 		$result = mysql_query($query);
 
         //Change mysql result to array so that it can be exported in JSON.
-        $rows = mysql_fetch_assoc($result); 
+        $rows = mysql_fetch_assoc($result)); 
         return json_encode($rows);
 	}
 
@@ -219,7 +219,7 @@ class phpapi {
 		$result = mysql_query($query);
 
         //Change mysql result to array so that it can be exported in JSON.
-        $rows = mysql_fetch_assoc($result); 
+        $rows = mysql_fetch_assoc($result)); 
         return json_encode($rows);
 	}
 

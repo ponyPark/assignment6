@@ -1,0 +1,15 @@
+<?
+session_start();
+include "phpapi.php";
+
+$_SESSION['userID'] = 1;
+$phpInit = new phpapi();
+echo($phpInit->getFavorites());
+
+
+
+
+
+
+
+?>
