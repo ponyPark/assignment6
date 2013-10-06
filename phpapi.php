@@ -125,7 +125,7 @@ class phpapi {
         {
             $rows[] = $temp;
         }     
-        return json_encode($rows);
+        return json_encode(array('favorites' => $rows));
 	}
 	
 	public function getCakes()

@@ -13,11 +13,41 @@ function init() {
     console.log(userEmail);
     //Test data to be inserted in
     generateList(flavorList);
-    //generateListfav(favList);
+    generateListfav(favList);
     generateList(fillingList);
     generateList(frostingList);
 
-    /*function generateListfav(input) {
+    function generateListfav(input) {
+        var mCurrentIndex = 0;
+        var request = new XMLHttpRequest();
+        var mImages = new Array();
+        var json;
+        var url = 'getFavorites.php';
+
+        request.open("GET", url, true);
+        request.send();
+        request.onreadystatechange = function(e) {
+
+            if(request.readyState === 4){
+                //document.body.innerHTML = request.responseText;
+                var jsonData = JSON.parse(request.responseText);
+                
+                var favID = jsonData.favorites[0].FavoriteID;
+                console.log(favID);
+        
+                //for (var i = 0, len = jsonData.images.length; i < len; i++){
+                
+                //var img = document.createElement('img');
+                //img.setAttribute("src", jsonData.images[i].imgPath);
+                //document.body.appendChild(img);
+
+                //}
+
+
+
+            }
+        }
+/*
         for (var i = 0; i < 10; i++) {
             //create new li element
             var newNumberListItem = document.createElement("li");
@@ -34,8 +64,8 @@ function init() {
             newNumberListItem.appendChild(numberListValue);
             newNumberListItem.appendChild(p);
            input.appendChild(newNumberListItem);
-        }
-    }*/
+        } */
+    }
 
     function generateList(input) {
         for (var i = 0; i < 10; i++) {
