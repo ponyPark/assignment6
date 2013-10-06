@@ -9,10 +9,33 @@ function init() {
     var favListSelection = favList.getElementsByTagName("img");
     var fillingListSelection = fillingList.getElementsByTagName("img");
     var frostingListSelection = frostingList.getElementsByTagName("img");
+    var userEmail = document.getElementById("userEmail").innerHTML;
+    console.log(userEmail);
     //Test data to be inserted in
     generateList(flavorList);
+    //generateListfav(favList);
     generateList(fillingList);
     generateList(frostingList);
+
+    /*function generateListfav(input) {
+        for (var i = 0; i < 10; i++) {
+            //create new li element
+            var newNumberListItem = document.createElement("li");
+            //create new text node
+            var numberListValue = document.createElement("img");
+            numberListValue.src = 'artwork/banana.PNG';
+            numberListValue.id = "img" + i;
+            var p = document.createElement('p'),
+            // creates a new text-node:
+            text = document.createTextNode('vanilla');
+            // appends the text-node to the newly-created p element:
+            p.appendChild(text);
+            numberListValue.addEventListener("click", selectImage, false);
+            newNumberListItem.appendChild(numberListValue);
+            newNumberListItem.appendChild(p);
+           input.appendChild(newNumberListItem);
+        }
+    }*/
 
     function generateList(input) {
         for (var i = 0; i < 10; i++) {

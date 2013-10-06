@@ -4,9 +4,7 @@
 <head>
     <? 
     session_start();
-    //these are the only two session variables that 
     //will be there if the user has successfully loggin into the system
-
 
 
     ?>
@@ -17,6 +15,9 @@
     <script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
+    <p id="userEmail">
+    <? echo($_SESSION['userEmail']);?> 
+    </p>
     <fieldset class="favList">
         <legend>Favorites List</legend>
         <ul id="favUl">
