@@ -6,6 +6,7 @@ function init() {
     var fillingList = document.getElementById("filling");
     var frostingList = document.getElementById("frosting");
     var orderingList = document.getElementById("orderingList");
+    var toppingList = document.getElementById("quad");
     var flavListSelection = flavorList.getElementsByTagName("img");
     var favListSelection = favList.getElementsByTagName("img");
     var fillingListSelection = fillingList.getElementsByTagName("img");
@@ -19,17 +20,18 @@ function init() {
     var favoriteObjects = new Array();
     var cupcakeOrder = new Array();
     //Test data to be inserted in
-    generateList(flavorList);
-    generateListfav(favList);
-    generateList(fillingList);
-    generateList(frostingList);
+    generateList(flavorList, 'getCakes.php');
+    generateListfav(favList, 'getFavorites.php');
+    generateList(fillingList, 'getFillings.php');
+    generateList(frostingList, 'getFrostings.php');
+    generateToppings(toppingList);
 
-    function generateListfav(input) {
+    function generateListfav(input ,url) {
         var mCurrentIndex = 0;
         var request = new XMLHttpRequest();
         var mImages = new Array();
         var json;
-        var url = 'getFavorites.php';
+        var favID 
 
         request.open("GET", url, true);
         request.send();
@@ -40,8 +42,10 @@ function init() {
                 var jsonData = JSON.parse(request.responseText);
                 
                 //grab the array and the length
-                var favID = jsonData.favorites;
-                var numFavs = favID.length; //number of favorite cupcakes
+                if(url === 'getFavorites.php')
+                    favID = jsonData.favorites;
+                
+                var numFavs = favID.length; //number of elements in array
                 
                 //add them to the list
                 for (var i = 0, len = numFavs; i < len; i++){
@@ -70,8 +74,74 @@ function init() {
 
     }
 
-    function generateList(input) {
-        for (var i = 0; i < 10; i++) {
+    function generateList(input, url) {
+        
+        var mCurrentIndex = 0;
+        var request = new XMLHttpRequest();
+        var mImages = new Array();
+        var json;
+        var favID;
+        var items;
+        var idVal;
+
+        request.open("GET", url, true);
+        request.send();
+        request.onreadystatechange = function(e) {
+
+            if(request.readyState === 4){
+                //save the response from server
+                var jsonData = JSON.parse(request.responseText);
+
+                
+                //grab the array and the length
+                if(url === 'getCakes.php'){
+                    favID = jsonData.cakes;
+                    item = 'Cake';
+                    idVal = item + "ID";
+                    }
+                if(url === 'getFillings.php'){
+                    favID = jsonData.fillings;
+                    item = 'Filling';
+                    idVal = item + "ID";}
+                if(url === 'getFrostings.php'){
+                    favID = jsonData.frostings;
+                    item = 'Frosting';
+                    idVal = item + "ID";}
+
+                
+                var numFavs = favID.length; //number of elements in array
+                
+                //add them to the list
+                for (var i = 0, len = numFavs; i < len; i++){
+                var newNumberListItem = document.createElement("li");
+                var numberListValue = document.createElement("img");
+                numberListValue.setAttribute("src", "artwork/" + favID[i].Img_Url);
+                numberListValue.setAttribute("id", item + i);
+                numberListValue.setAttribute("name", favID[i][idVal]);
+                var p = document.createElement('p'),
+                
+                // creates a new text-node:
+                text = document.createTextNode(favID[i].Flavor);
+                p.appendChild(text);
+                newNumberListItem.appendChild(numberListValue);
+                newNumberListItem.appendChild(p);
+                newNumberListItem.addEventListener("click", selectImage, false);
+                
+                input.appendChild(newNumberListItem);
+
+                }
+
+
+
+            }
+
+
+
+
+
+
+
+        /*for (var i = 0; i < 10; i++) {
             //create new li element
             var newNumberListItem = document.createElement("li");
             //create new text node
@@ -87,16 +157,64 @@ function init() {
             newNumberListItem.appendChild(numberListValue);
             newNumberListItem.appendChild(p);
            input.appendChild(newNumberListItem);
-        }
+        }*/
     }
+}
+
+
+function generateToppings(input) {
+        
+        var request = new XMLHttpRequest();
+        var mImages = new Array();
+        var json;
+        var url = 'getToppings.php'
+
+        request.open("GET", url, true);
+        request.send();
+        request.onreadystatechange = function(e) {
+
+            if(request.readyState === 4){
+                //save the response from server
+                var jsonData = JSON.parse(request.responseText);
+                
+                //grab the array and the length
+                var favID = jsonData.toppings;
+
+                
+                var numFavs = favID.length; //number of elements in array
+                
+                //add them to the list
+                for (var i = 0, len = numFavs; i < len; i++){
+                    var newNumberListItem = document.createElement("li");
+                    var numberListValue = document.createElement("input");
+                    var label = document.createElement("label");
+                    numberListValue.setAttribute("type", "checkbox");
+                    numberListValue.setAttribute("id", "Topping"+i);
+                    numberListValue.setAttribute("name", favID[i].ToppingsID);
+                    label.setAttribute("for","Topping"+i);
+                    label.innerHTML = favID[i].Flavor;
+                
+                // creates a new text-node:
+                    newNumberListItem.appendChild(numberListValue);
+                    newNumberListItem.appendChild(label);
+                    
+                    input.appendChild(newNumberListItem);
+
+                }
+
+
+
+            }
+        }
+}
 
 
     /*
     The selectImage function will allow the user to know that they made a selection.
     */
     function selectImage(e) {
-
-        removeClasses(e);
+        if(e.target.innerHTML === "") //ensures only images can be clicked
+            removeClasses(e);
 
     }
     function removeClasses(e) {
@@ -227,6 +345,24 @@ function init() {
 
     var updateOrder = document.getElementById("updateOrder");
     updateOrder.addEventListener("click", function () {
+        //adds to order pane
+        var selectedImage;
+        var falvorImgEl;
+        var fillingImgEl;
+        var frostingImgEl;
+        var selectedItems = document.getElementsByClassName('selected');
+        if(selectedItems.length != 3){
+            selectedImage = selectedItems[1].src;
+            flavorImgEl = selectedItems[1];
+            fillingImgEl = selectedItems[2];
+            frostingImgEl = selectedItems[3];}
+        else{
+            selectedImage = selectedItems[0].src;
+            flavorImgEl = selectedItems[0];
+            fillingImgEl = selectedItems[1];
+            frostingImgEl = selectedItems[2];}
+
+
         //create new li element
         var newCupcakeListItem = document.createElement("li");
         //create new button element
@@ -234,7 +370,7 @@ function init() {
         removeButton.innerHTML = "Remove";
         //create new text node
         var cupcakeListValue = document.createElement("img");
-        cupcakeListValue.src = 'artwork/banana.PNG';
+        cupcakeListValue.src = selectedImage;
 
         var p = document.createElement('alt');
         var cupcakeFlavor = document.createTextNode(flavorChoice);

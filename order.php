@@ -50,6 +50,7 @@
         <fieldset class="toppingGroup">
             <legend>Toppings</legend>
             <ul id="quad">
+                <!--
                 <li>
                     <input type="checkbox" id="t1" class="topping" value="sprinkles" /><label for="t1">Sprinkles</label></li>
                 <li>
@@ -77,7 +78,7 @@
                 <li>
                     <input type="checkbox" id="t10" class="topping" value="snicker bits" /><label for="t10">Snicker bits</label></li>
                 <li>
-                    <input type="checkbox" id="t11" class="topping" value="mini marshmellows" /><label for="t11">Mini marshmellows</label></li>
+                    <input type="checkbox" id="t11" class="topping" value="mini marshmellows" /><label for="t11">Mini marshmellows</label></li> -->
             </ul>
             <button id="clearAll" type="button">Clear all toppings</button>
         </fieldset>
