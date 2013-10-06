@@ -126,12 +126,12 @@ function init() {
                     //do color instead of image
                 numberListValue = document.createElement("div");
                 numberListValue.style.backgroundColor = favID[i].RGB;
-                numberListValue.setAttribute("id", item + i);
+                numberListValue.setAttribute("id", item + favID[i][idVal]);
                 }
                 else{
                 numberListValue = document.createElement("img");
                 numberListValue.setAttribute("src", "artwork/" + favID[i].Img_Url);
-                numberListValue.setAttribute("id", item + i);
+                numberListValue.setAttribute("id", item + favID[i][idVal]);
 
                 }
                 numberListValue.setAttribute("name", favID[i][idVal]);
@@ -244,7 +244,7 @@ function generateToppings(input) {
                     var numberListValue = document.createElement("input");
                     var label = document.createElement("label");
                     numberListValue.setAttribute("type", "checkbox");
-                    numberListValue.setAttribute("id", "Topping"+i);
+                    numberListValue.setAttribute("id", "Topping"+ i);
                     numberListValue.setAttribute("name", favID[i].ToppingsID);
                     label.setAttribute("for","Topping"+i);
                     label.innerHTML = favID[i].Flavor;
@@ -259,6 +259,39 @@ function generateToppings(input) {
 
 
 
+            }
+        }
+}
+
+
+function toggleWhenFavClicked(e){
+    var favoriteIDinDB = e.target.name
+
+    var request = new XMLHttpRequest();
+    var mImages = new Array();
+    var json;
+    var url = 'getFavoriteItems.php/?favID=' + favoriteIDinDB;
+
+
+        request.open("GET", url, true);
+        request.send();
+        request.onreadystatechange = function(e) {
+
+            if(request.readyState === 4){
+                //save the response from server
+                var jsonData = JSON.parse(request.responseText);
+                var favItemsfromDB = jsonData.favoriteitems;
+                var CakeID = favItemsfromDB[0].favCake.CakeID;
+                var FillingID = favItemsfromDB[1].favfilling.FillingID;
+                var FrostingID = favItemsfromDB[2].favfrosting.FrostingID;
+                var ToppingsArray = favItemsfromDB[3].favtoppings;
+                document.getElementById("Cake" + (CakeID)).click();
+                document.getElementById("Filling" + (FillingID)).click();
+                document.getElementById("Frosting" + (FrostingID)).click();
+                for(var i = 0; i < ToppingsArray.length; i++){
+
+                    document.getElementById("Topping" + ((ToppingsArray[i].ToppingsID)-1)).checked = true;
+                }
             }
         }
 }
@@ -295,6 +328,7 @@ function generateToppings(input) {
         
         if (e.target.parentNode.parentNode.id === "favUl") {
             var counter = 0;
+            toggleWhenFavClicked(e);
             for (var i = 0; i < favListSelection.length; i++) {
                 favListSelection[i].className = "";
             }
