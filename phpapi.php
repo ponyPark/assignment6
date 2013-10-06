@@ -64,7 +64,7 @@ class phpapi {
         {
             header ('Location: analytics.php');
         }
-        if(mysql_num_rows($result) > 0)
+        else if(mysql_num_rows($result) > 0)
         {
             $_SESSION['logged'] = true;
             $_SESSION['userEmail'] = $info['Email'];

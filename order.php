@@ -16,7 +16,7 @@
 </head>
 <body>
     <p id="userEmail">
-    <? echo($_SESSION['userEmail']);?> 
+    <? echo ($_SESSION['userEmail']);?> 
     </p>
     <fieldset class="favList">
         <legend>Favorites List</legend>
