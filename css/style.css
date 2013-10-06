@@ -92,6 +92,7 @@ h2 {
 
 
 
+
 /* Order Page */
 .selected {
     border: 3px dashed #808080;
@@ -107,7 +108,7 @@ h2 {
 #orderingPane {
     position: relative;
     margin-top: 10px;
-    margin-left:10px;
+    margin-left: 10px;
     margin-right: 20px;
     float: right;
     padding: 10px;
@@ -115,6 +116,37 @@ h2 {
     background: #b6ff00;
     width: 250px;
 }
+
+    #orderingPane alt {
+        padding-left: 5px;
+        display: inline;
+    }
+
+    #orderingPane img {
+        display: inline;
+        width: 25px;
+        height: 25px;
+        margin-left: 0px;
+    }
+
+    #orderingPane ul button {
+        display: inline;
+        height: 20px;
+        width: 70px;
+    }
+
+    #orderingPane ul {
+        white-space: nowrap;
+        overflow-y: scroll;
+        margin: 0;
+        padding: 0;
+    }
+
+    #orderingPane li {
+        margin-top: 5px;
+        display: block;
+        list-style: none;
+    }
 /** END */
 /* Favorites List section */
 .favList {
@@ -139,8 +171,8 @@ h2 {
 
     .favList img {
         display: inline-block;
-        width:80px;
-        height:80px;
+        width: 80px;
+        height: 80px;
     }
 
     .favList alt {
@@ -150,7 +182,7 @@ h2 {
     .favList li {
         margin-bottom: 30px;
         margin-top: 5px;
-        margin-left:-10px;
+        margin-left: -10px;
         padding: 15px;
         display: block;
         list-style: none;
@@ -273,7 +305,6 @@ footer {
     float: left;
 }
 
-
 #overlay {
     visibility: hidden;
     position: fixed;
@@ -281,8 +312,8 @@ footer {
     left: 50%;
     width: 25em;
     height: 20em;
-    margin-top: -12.5em; /*set to a negative number 1/2 of your height*/
-    margin-left: -10em; /*set to a negative number 1/2 of your width*/
+    margin-top: -12.5em; /*set to a negative number 1/2 of height*/
+    margin-left: -10em; /*set to a negative number 1/2 of width*/
     z-index: 1000;
     background-color: rgba(0,0,0,0.5);
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
@@ -300,7 +331,7 @@ footer {
     }
 
     #overlay ul {
-        display:block;
+        display: block;
         margin-left: -50px;
     }
 

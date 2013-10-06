@@ -24,6 +24,8 @@
         </ul>
     </fieldset>
     <div id="orderingPane">
+	 <ul id="orderingList">
+            </ul>
         <button id="order" type="button">Order</button>
     </div>
     <div id="selectContainer">
@@ -90,10 +92,10 @@
      <div>
           <p>Cupcake name: <input type="text" id="cupcakeName" ></p>
            <ul>
-               <li id="cupcakeFlavor">Cupcake Flavor:</li>
-               <li id="cupcakeFilling">Fillings:</li>
-               <li id="cupcakeFrosting">Frosting:</li>
-               <li id="cupcakeTopping">Toppings:</li>
+               <li id="cupcakeFlavor"></li>
+               <li id="cupcakeFilling"></li>
+               <li id="cupcakeFrosting"></li>
+               <li id="cupcakeTopping"></li>
            </ul>
           <button id="saveFavorite" type="button">Save</button>
           <button id="exit" type="button">Exit</button>
