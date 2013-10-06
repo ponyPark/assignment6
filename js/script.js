@@ -43,13 +43,25 @@ function init() {
                 var numFavs = favID.length;
                 console.log(numFavs);
         
-                //for (var i = 0, len = jsonData.images.length; i < len; i++){
+                for (var i = 0, len = numFavs; i < len; i++){
+                var newNumberListItem = document.createElement("li");
+                var numberListValue = document.createElement("img");
+                numberListValue.setAttribute("src", "artwork/" + favID[i].Img_url);
+                numberListValue.setAttribute("id", "fav"+i);
+                numberListValue.setAttribute("name", favID[i].FavoriteID);
+                var p = document.createElement('alt'),
                 
-                //var img = document.createElement('img');
-                //img.setAttribute("src", jsonData.images[i].imgPath);
+                // creates a new text-node:
+                text = document.createTextNode(favID[i].Name);
+                p.appendChild(text);
+                newNumberListItem.appendChild(numberListValue);
+                newNumberListItem.appendChild(p);
+                
+                input.appendChild(newNumberListItem);
+                console.log("artwork/" + favID[i].Img_url);
                 //document.body.appendChild(img);
 
-                //}
+                }
 
 
 
