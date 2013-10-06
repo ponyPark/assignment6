@@ -329,12 +329,13 @@ function toggleWhenFavClicked(e){
         
         if (e.target.parentNode.parentNode.id === "favUl") {
             var counter = 0;
-            toggleWhenFavClicked(e);
+            
             for (var i = 0; i < favListSelection.length; i++) {
                 favListSelection[i].className = "";
             }
-            if (!resetEveryting)
+            if (!resetEveryting){
             e.target.className = "selected";
+            toggleWhenFavClicked(e);}
         }
         if (e.target.parentNode.parentNode.id === "frosting") {
             var counter = 0;
