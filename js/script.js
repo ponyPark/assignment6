@@ -36,13 +36,14 @@ function init() {
         request.onreadystatechange = function(e) {
 
             if(request.readyState === 4){
-                //document.body.innerHTML = request.responseText;
+                //save the response from server
                 var jsonData = JSON.parse(request.responseText);
                 
+                //grab the array and the length
                 var favID = jsonData.favorites;
-                var numFavs = favID.length;
-                console.log(numFavs);
-        
+                var numFavs = favID.length; //number of favorite cupcakes
+                
+                //add them to the list
                 for (var i = 0, len = numFavs; i < len; i++){
                 var newNumberListItem = document.createElement("li");
                 var numberListValue = document.createElement("img");
@@ -56,10 +57,9 @@ function init() {
                 p.appendChild(text);
                 newNumberListItem.appendChild(numberListValue);
                 newNumberListItem.appendChild(p);
+                newNumberListItem.addEventListener("click", selectImage, false);
                 
                 input.appendChild(newNumberListItem);
-                console.log("artwork/" + favID[i].Img_url);
-                //document.body.appendChild(img);
 
                 }
 
@@ -67,24 +67,7 @@ function init() {
 
             }
         }
-/*
-        for (var i = 0; i < 10; i++) {
-            //create new li element
-            var newNumberListItem = document.createElement("li");
-            //create new text node
-            var numberListValue = document.createElement("img");
-            numberListValue.src = 'artwork/banana.PNG';
-            numberListValue.id = "img" + i;
-            var p = document.createElement('p'),
-            // creates a new text-node:
-            text = document.createTextNode('vanilla');
-            // appends the text-node to the newly-created p element:
-            p.appendChild(text);
-            numberListValue.addEventListener("click", selectImage, false);
-            newNumberListItem.appendChild(numberListValue);
-            newNumberListItem.appendChild(p);
-           input.appendChild(newNumberListItem);
-        } */
+
     }
 
     function generateList(input) {
