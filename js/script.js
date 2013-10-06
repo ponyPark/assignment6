@@ -5,49 +5,28 @@ function init() {
     var favList = document.getElementById("favUl");
     var fillingList = document.getElementById("filling");
     var frostingList = document.getElementById("frosting");
+    var orderingList = document.getElementById("orderingList");
     var flavListSelection = flavorList.getElementsByTagName("img");
     var favListSelection = favList.getElementsByTagName("img");
     var fillingListSelection = fillingList.getElementsByTagName("img");
     var frostingListSelection = frostingList.getElementsByTagName("img");
+    var resetEveryting = false;
+    var flavorChoice = "";
+    var fillingChoice = "";
+    var frostingChoice = "";
+    var toppingChoices = [];
+    //Store orders in object array
+    var favoriteObjects = new Array();
+    var cupcakeOrder = new Array();
     var userEmail = document.getElementById("userEmail").innerHTML;
     console.log(userEmail);
     //Test data to be inserted in
     generateList(flavorList);
-    generateListfav(favList);
+    //generateListfav(favList);
     generateList(fillingList);
     generateList(frostingList);
 
-    function generateListfav(input) {
-        var mCurrentIndex = 0;
-        var request = new XMLHttpRequest();
-        var mImages = new Array();
-        var json;
-        var url = 'getFavorites.php';
-
-        request.open("GET", url, true);
-        request.send();
-        request.onreadystatechange = function(e) {
-
-            if(request.readyState === 4){
-                //document.body.innerHTML = request.responseText;
-                var jsonData = JSON.parse(request.responseText);
-                
-                var favID = jsonData.favorites[0].FavoriteID;
-                console.log(favID);
-        
-                //for (var i = 0, len = jsonData.images.length; i < len; i++){
-                
-                //var img = document.createElement('img');
-                //img.setAttribute("src", jsonData.images[i].imgPath);
-                //document.body.appendChild(img);
-
-                //}
-
-
-
-            }
-        }
-/*
+    /*function generateListfav(input) {
         for (var i = 0; i < 10; i++) {
             //create new li element
             var newNumberListItem = document.createElement("li");
@@ -64,8 +43,8 @@ function init() {
             newNumberListItem.appendChild(numberListValue);
             newNumberListItem.appendChild(p);
            input.appendChild(newNumberListItem);
-        } */
-    }
+        }
+    }*/
 
     function generateList(input) {
         for (var i = 0; i < 10; i++) {
@@ -104,6 +83,7 @@ function init() {
             for (var i = 0; i < fillingListSelection.length; i++) {
                 fillingListSelection[i].className = "";
             }
+            if (!resetEveryting)
             e.target.className = "selected";
         }
         if (e.target.parentNode.parentNode.id === "flavor") {
@@ -111,7 +91,7 @@ function init() {
             for (var i = 0; i < flavListSelection.length; i++) {              
                     flavListSelection[i].className = "";
             }
-            
+            if (!resetEveryting)
             e.target.className = "selected";
 
         }
@@ -121,27 +101,44 @@ function init() {
             for (var i = 0; i < favListSelection.length; i++) {
                 favListSelection[i].className = "";
             }
+            if (!resetEveryting)
             e.target.className = "selected";
         }
         if (e.target.parentNode.parentNode.id === "frosting") {
             var counter = 0;
             for (var i = 0; i < frostingListSelection.length; i++) {         
                     frostingListSelection[i].className = "";
-                }            
+            }
+            if (!resetEveryting)
             e.target.className = "selected";
         }
     }
+    /** Display overlay screen **/
     var overlay = document.getElementById("addFavorite");
     overlay.addEventListener("click", function () {
        
             el = document.getElementById("overlay");
             el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+            var options = document.getElementById("overlay").getElementsByTagName("li");
+            options[0].textContent = "Cupcake Flavor: " + flavorChoice;
+            options[1].textContent = "Filling: " + fillingChoice;
+            options[2].textContent = "Frosting: " + frostingChoice;
+            var fieldSet = document.getElementById('quad').getElementsByTagName("input");
+            var len = fieldSet.length;
+            for (i = 0; i < len; i++) {
+                if (fieldSet[i].checked) {
+                    toppingChoices.push(fieldSet[i].value);
+                }
+            }
+            options[3].textContent = "Toppings: " + toppingChoices.slice(0, toppingChoices.length);
+
     });
     var exitOverlay = document.getElementById("exit");
     exitOverlay.addEventListener("click", function () {
         el = document.getElementById("overlay");
         el.style.visibility = "hidden";
     });
+    /** Save optino within the overlay screen **/
     var saveOverlay = document.getElementById("saveFavorite");
     saveOverlay.addEventListener("click", function () {
         var cupcakeName = document.getElementById("cupcakeName");
@@ -153,6 +150,14 @@ function init() {
         var p = document.createElement('alt'),
         // creates a new text-node:
         text = document.createTextNode(cupcakeName.value);
+        favoriteObjects.push(
+   {
+       "name": cupcakeName.value,
+       "flavor": flavorChoice,
+       "frosting": frostingChoice,
+       "filling": fillingChoice,
+       "toppings": toppingChoices
+   });
         // appends the text-node to the newly-created p element:
         p.appendChild(text);
         cupcakeListValue.addEventListener("click", selectImage, false);
@@ -175,12 +180,64 @@ function init() {
         }
     });
     var resetCupcake = document.getElementById("resetCupcake");
-    resetCupcake.addEventListener("click", function () {  
-        //TODO
+    resetCupcake.addEventListener("click", function () {
+        resetEveryting = true;
+        flavListSelection[0].click();
+        frostingListSelection[0].click();
+        fillingListSelection[0].click();
+        flavorChoice = "";
+        toppingChoices.length = 0;
+        fillingChoice = "";
+        frostingChoice = "";
+        resetEveryting = false;
+        resetToppings.click();
     });
     var order = document.getElementById("order");
     order.addEventListener("click", function () {
-       //TODO
+        //As of now prints out stored information of cupcake order
+        for (var i = 0; i < cupcakeOrder.length; i++)
+            console.log(cupcakeOrder[i]);
     });
+    //Removes item from ordering list
+    var removeButton;
+
+    var updateOrder = document.getElementById("updateOrder");
+    updateOrder.addEventListener("click", function () {
+        //create new li element
+        var newCupcakeListItem = document.createElement("li");
+        //create new button element
+        removeButton = document.createElement("button");
+        removeButton.innerHTML = "Remove";
+        //create new text node
+        var cupcakeListValue = document.createElement("img");
+        cupcakeListValue.src = 'artwork/banana.PNG';
+
+        var p = document.createElement('alt');
+        var cupcakeFlavor = document.createTextNode(flavorChoice);
+        var frosting = document.createTextNode(frostingChoice);
+        var filling = document.createTextNode(fillingChoice);
+        var toppings = document.createTextNode(toppingChoices.slice(0, toppingChoices.length));
+        // Add some new cupcake order object, we need unqiue identifier for each order though
+        cupcakeOrder.push(
+            {
+                "name": cupcakeName.value,
+                "flavor": flavorChoice,
+                "frosting": frostingChoice,
+                "filling": fillingChoice,
+                "toppings": toppingChoices
+            });
+        // appends the text-node to the newly-created p element:
+        p.appendChild(document.createTextNode(flavorChoice + " x " + quan.value));
+        newCupcakeListItem.appendChild(cupcakeListValue);
+        newCupcakeListItem.appendChild(p);
+        orderingList.appendChild(newCupcakeListItem);
+        removeButton.addEventListener("click", removeItem, true);
+        newCupcakeListItem.appendChild(removeButton);
+    });
+    function removeItem(e) {
+        var itemRem = e.target.parentNode;
+        cupcakeOrder.remove
+        itemRem.parentNode.removeChild(itemRem);
+    }
 }
 window.onload = init;
