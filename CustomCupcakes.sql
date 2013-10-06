@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `CupcakeOrders` (
   `UserID` int NOT NULL,
   `Quantity` int NOT NULL,
   `CakeID` int NOT NULL,
-  `FillingID` int DEFAULT NULL,
+  `FillingID` int NOT NULL,
   `FrostingID` int NOT NULL,
   PRIMARY KEY (`OrderID`),
   CONSTRAINT FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) 
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `Favorites` (
   `FavoriteID` int NOT NULL AUTO_INCREMENT,
   `UserID` int NOT NULL,
   `CakeID` int NOT NULL,
-  `FillingID` int DEFAULT NULL,
+  `FillingID` int NOT NULL,
   `FrostingID` int NOT NULL,
   `Name` varchar(50) NOT NULL,
   PRIMARY KEY (`FavoriteID`),
