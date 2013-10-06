@@ -288,6 +288,7 @@ function toggleWhenFavClicked(e){
                 document.getElementById("Cake" + (CakeID)).click();
                 document.getElementById("Filling" + (FillingID)).click();
                 document.getElementById("Frosting" + (FrostingID)).click();
+                document.getElementById("clearAll").click();
                 for(var i = 0; i < ToppingsArray.length; i++){
 
                     document.getElementById("Topping" + ((ToppingsArray[i].ToppingsID)-1)).checked = true;
