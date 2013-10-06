@@ -16,6 +16,12 @@ function init() {
     var fillingChoice = "";
     var frostingChoice = "";
     var toppingChoices = [];
+    var flavorImgEl;
+    var fillingImgEl;
+    var frostingImgEl;
+    var selectedImage;
+    var numToppings;
+    var toppingIDArray = [];
     //Store orders in object array
     var favoriteObjects = new Array();
     var cupcakeOrder = new Array();
@@ -161,6 +167,43 @@ function init() {
     }
 }
 
+function whatIsSelected(){
+
+    //adds to order pane
+        toppingChoices = [];
+        var selectedItems = document.getElementsByClassName('selected');
+        if(selectedItems.length === 4){
+            selectedImage = selectedItems[1].src;
+            flavorImgEl = selectedItems[1];
+            fillingImgEl = selectedItems[2];
+            frostingImgEl = selectedItems[3];}
+        if(selectedItems.length === 3){
+            selectedImage = selectedItems[0].src;
+            flavorImgEl = selectedItems[0];
+            fillingImgEl = selectedItems[1];
+            frostingImgEl = selectedItems[2];}
+        if(selectedItems.length != 3 && selectedItems.length!=4){
+            alert("Not all options have been chosen");
+            return false;
+
+        }
+        for(var i = 0; i<numToppings; i++){
+            
+            if(document.getElementById('Topping'+i).checked === true){
+                toppingChoices.push(document.getElementById('Topping'+i));
+                toppingIDArray.push(toppingChoices[toppingChoices.length-1].name);
+            }
+
+
+
+        }
+        //var flavorName = selectedImage.nextSibling.innerHTML;
+        flavorChoice = flavorImgEl.nextSibling.innerHTML;
+        frostingChoice = frostingImgEl.nextSibling.innerHTML;
+        fillingChoice = fillingImgEl.nextSibling.innerHTML;
+        return true;
+}
+
 
 function generateToppings(input) {
         
@@ -182,6 +225,7 @@ function generateToppings(input) {
 
                 
                 var numFavs = favID.length; //number of elements in array
+                numToppings = numFavs;
                 
                 //add them to the list
                 for (var i = 0, len = numFavs; i < len; i++){
@@ -258,21 +302,20 @@ function generateToppings(input) {
     /** Display overlay screen **/
     var overlay = document.getElementById("addFavorite");
     overlay.addEventListener("click", function () {
-       
+            if(whatIsSelected()){
             el = document.getElementById("overlay");
             el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
             var options = document.getElementById("overlay").getElementsByTagName("li");
             options[0].textContent = "Cupcake Flavor: " + flavorChoice;
             options[1].textContent = "Filling: " + fillingChoice;
             options[2].textContent = "Frosting: " + frostingChoice;
-            var fieldSet = document.getElementById('quad').getElementsByTagName("input");
-            var len = fieldSet.length;
-            for (i = 0; i < len; i++) {
-                if (fieldSet[i].checked) {
-                    toppingChoices.push(fieldSet[i].value);
-                }
+            options[3].textContent = "Toppings: ";
+            for(var i = 0; i < toppingChoices.length; i++){
+                if(i > 0)
+                    options[3].textContent += " and ";
+                options[3].textContent += toppingChoices[i].nextSibling.innerHTML;
             }
-            options[3].textContent = "Toppings: " + toppingChoices.slice(0, toppingChoices.length);
+        }
 
     });
     var exitOverlay = document.getElementById("exit");
@@ -283,29 +326,29 @@ function generateToppings(input) {
     /** Save optino within the overlay screen **/
     var saveOverlay = document.getElementById("saveFavorite");
     saveOverlay.addEventListener("click", function () {
+        
         var cupcakeName = document.getElementById("cupcakeName");
         //create new li element
         var newCupcakeListItem = document.createElement("li");
         //create new text node
         var cupcakeListValue = document.createElement("img");
-        cupcakeListValue.src = 'artwork/banana.PNG';
+        cupcakeListValue.src = selectedImage;
         var p = document.createElement('alt'),
         // creates a new text-node:
         text = document.createTextNode(cupcakeName.value);
         favoriteObjects.push(
    {
        "name": cupcakeName.value,
-       "flavor": flavorChoice,
-       "frosting": frostingChoice,
-       "filling": fillingChoice,
-       "toppings": toppingChoices
+        "flavor": flavorImgEl.name,
+        "frosting": frostingImgEl.name,
+        "filling": frostingImgEl.name,
+        "toppings": toppingChoices
    });
-        // appends the text-node to the newly-created p element:
-        p.appendChild(text);
-        cupcakeListValue.addEventListener("click", selectImage, false);
-        newCupcakeListItem.appendChild(cupcakeListValue);
-        newCupcakeListItem.appendChild(p);
-        favList.appendChild(newCupcakeListItem);
+        //write favoriteObjects to server and then rerun the generateListFav function
+
+
+
+  
         //close the dialog
         el = document.getElementById("overlay");
                 el.style.visibility = "hidden";
@@ -345,26 +388,12 @@ function generateToppings(input) {
 
     var updateOrder = document.getElementById("updateOrder");
     updateOrder.addEventListener("click", function () {
-        //adds to order pane
-        var selectedImage;
-        var falvorImgEl;
-        var fillingImgEl;
-        var frostingImgEl;
-        var selectedItems = document.getElementsByClassName('selected');
-        if(selectedItems.length != 3){
-            selectedImage = selectedItems[1].src;
-            flavorImgEl = selectedItems[1];
-            fillingImgEl = selectedItems[2];
-            frostingImgEl = selectedItems[3];}
-        else{
-            selectedImage = selectedItems[0].src;
-            flavorImgEl = selectedItems[0];
-            fillingImgEl = selectedItems[1];
-            frostingImgEl = selectedItems[2];}
-
+        
+        if(whatIsSelected()){
 
         //create new li element
         var newCupcakeListItem = document.createElement("li");
+        newCupcakeListItem.setAttribute("name",cupcakeOrder.length);
         //create new button element
         removeButton = document.createElement("button");
         removeButton.innerHTML = "Remove";
@@ -378,14 +407,15 @@ function generateToppings(input) {
         var filling = document.createTextNode(fillingChoice);
         var toppings = document.createTextNode(toppingChoices.slice(0, toppingChoices.length));
         // Add some new cupcake order object, we need unqiue identifier for each order though
+        for(var i = 0; i < quan.value; i++){
         cupcakeOrder.push(
             {
                 "name": cupcakeName.value,
-                "flavor": flavorChoice,
-                "frosting": frostingChoice,
-                "filling": fillingChoice,
-                "toppings": toppingChoices
-            });
+                "flavor": flavorImgEl.name,
+                "frosting": frostingImgEl.name,
+                "filling": frostingImgEl.name,
+                "toppings": toppingIDArray
+            });}
         // appends the text-node to the newly-created p element:
         p.appendChild(document.createTextNode(flavorChoice + " x " + quan.value));
         newCupcakeListItem.appendChild(cupcakeListValue);
@@ -393,10 +423,12 @@ function generateToppings(input) {
         orderingList.appendChild(newCupcakeListItem);
         removeButton.addEventListener("click", removeItem, true);
         newCupcakeListItem.appendChild(removeButton);
+    }
     });
     function removeItem(e) {
         var itemRem = e.target.parentNode;
-        cupcakeOrder.remove
+        elemToRemove = itemRem.name;
+        cupcakeOrder.splice(elemToRemove,1);
         itemRem.parentNode.removeChild(itemRem);
     }
 }
