@@ -72,7 +72,7 @@ class phpapi {
 			$_SESSION['userEmail'] = $info['Email'];
 			//Added the user to the session since we use
 			//that for adding favorites, etc.
-			$_SESSION['user'] = $info['UserID'];
+			$_SESSION['userID'] = $info['UserID'];
 			header ('Location: order.php');	
 		}
 
@@ -82,7 +82,7 @@ class phpapi {
 	public function addFavorites()
 	{
         //Retrieve the values from the session and the post. 
-		$user = $_SESSION['user'];
+		$userID = $_SESSION['userID'];
         //If else statement in case there is no filling selected.
 		$filling = (!empty($_POST['fillingID']) ? "'".$_POST['fillingID']."'" : "NULL");
 		$frosting = $_POST['frostingID'];
@@ -94,7 +94,7 @@ class phpapi {
         $favoriteStatus = mysql_fetch_assoc(mysql_query("SHOW TABLE STATUS LIKE 'Favorites'"));
         $favoriteID = $favoriteStatus['Auto_increment'];
         //Query to insert a favorite.
-		$query = "INSERT INTO Favorites(UserID, CakeID, FillingID, FrostingID, Name) VALUES ('$user', '$cake', $filling, '$frosting', '$favName')";
+		$query = "INSERT INTO Favorites(UserID, CakeID, FillingID, FrostingID, Name) VALUES ('$userID', '$cake', $filling, '$frosting', '$favName')";
 		if(!mysql_query($query))
 		{
 			return false;
@@ -116,13 +116,26 @@ class phpapi {
 		
 	public function getFavorites()
 	{
-		
+        //Getting the name, id, and image of a user favorites using their id.
+        $userID = $_SESSION['userID'];
+        $query = "SELECT FavoriteID, Name, Img_url FROM Favorites JOIN Cakes ON Favorites.CakeID = Cakes.CakeID WHERE UserID = '$userID'";
+		$result = mysql_query($query);
+
+        //Change mysql result to array so that it can be exported in JSON
+        $rows = array();
+        while($temp = mysql_fetch_assoc($result))
+        {
+            $rows[] = $temp;
+        }     
+        return json_encode($rows);
 	}
 	
 	public function getCakeOptions()
 	{
 	
 	}
+
+    //Add get functions for cake, filling, frosting, and toppings.
 	
 	public function addOrder()
 	{
