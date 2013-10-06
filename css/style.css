@@ -18,6 +18,11 @@ html {
     display:none;
 }
 
+li div{
+    height: 80px;
+    width: 80px;
+}
+
 input {
     /*display:block;*/
     width: 150px;

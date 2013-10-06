@@ -9,7 +9,7 @@ function init() {
     var toppingList = document.getElementById("quad");
     var flavListSelection = flavorList.getElementsByTagName("img");
     var favListSelection = favList.getElementsByTagName("img");
-    var fillingListSelection = fillingList.getElementsByTagName("img");
+    var fillingListSelection = fillingList.getElementsByTagName("div");
     var frostingListSelection = frostingList.getElementsByTagName("img");
     var resetEveryting = false;
     var flavorChoice = "";
@@ -120,9 +120,20 @@ function init() {
                 //add them to the list
                 for (var i = 0, len = numFavs; i < len; i++){
                 var newNumberListItem = document.createElement("li");
-                var numberListValue = document.createElement("img");
+                var numberListValue;
+                if( url === 'getFillings.php'){
+
+                    //do color instead of image
+                numberListValue = document.createElement("div");
+                numberListValue.style.backgroundColor = favID[i].RGB;
+                numberListValue.setAttribute("id", item + i);
+                }
+                else{
+                numberListValue = document.createElement("img");
                 numberListValue.setAttribute("src", "artwork/" + favID[i].Img_Url);
                 numberListValue.setAttribute("id", item + i);
+
+                }
                 numberListValue.setAttribute("name", favID[i][idVal]);
                 var p = document.createElement('p'),
                 
