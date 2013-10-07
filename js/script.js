@@ -33,6 +33,7 @@ function init() {
     generateToppings(toppingList);
 
     function generateListfav(input ,url) {
+        favList.innerHTML = "";
         var mCurrentIndex = 0;
         var request = new XMLHttpRequest();
         var mImages = new Array();
@@ -384,7 +385,18 @@ function toggleWhenFavClicked(e){
         // creates a new text-node:
         text = document.createTextNode(cupcakeName.value);
         var request = new XMLHttpRequest();
-        var passing = 'CakeID=' + flavorImgEl.name + '&fillingID=' + fillingImgEl.getAttribute("name") + '&frostingID=' + frostingImgEl.name + '&favoriteName=' + cupcakeName.value + '&toppingsID=' + toppingChoices; 
+        var toppingArrayIDPass = new Array();
+        
+        var passing = 'CakeID=' + flavorImgEl.name + '&fillingID=' + fillingImgEl.getAttribute("name") + '&frostingID=' + frostingImgEl.name + '&favoriteName=' + cupcakeName.value + '&toppingsID='; 
+        for( var i = 0; i< toppingChoices.length; i++){
+
+            toppingArrayIDPass.push(toppingChoices[i].name);
+
+        }
+        //passing += ')'
+        var toppingArrayPass = JSON.stringify(toppingArrayIDPass)
+        passing += toppingArrayPass;
+        console.log(passing);
         request.open("POST", 'addFavorite.php', true);
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         request.send(passing);

@@ -85,7 +85,7 @@ class phpapi
         $cake = $_POST['CakeID'];
         // Fail-safe in case someone tries to hack us.
         $favName = mysql_real_escape_string($_POST['favoriteName']);
-        $toppingsList = $_POST['toppingsID'];
+        $toppingsList = json_decode($_POST['toppingsID']);
 
         // Gets the current id in the favorites table.
         $favoriteStatus = mysql_fetch_assoc(mysql_query("SHOW TABLE STATUS LIKE 'Favorites'"));
