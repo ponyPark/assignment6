@@ -388,7 +388,7 @@ function toggleWhenFavClicked(e){
        "name": cupcakeName.value,
         "flavor": flavorImgEl.name,
         "frosting": frostingImgEl.name,
-        "filling": frostingImgEl.name,
+        "filling": fillingImgEl.getAttribute("name"),
         "toppings": toppingChoices
    });
         //write favoriteObjects to server and then rerun the generateListFav function
@@ -454,15 +454,18 @@ function toggleWhenFavClicked(e){
         var filling = document.createTextNode(fillingChoice);
         var toppings = document.createTextNode(toppingChoices.slice(0, toppingChoices.length));
         // Add some new cupcake order object, we need unqiue identifier for each order though
-        for(var i = 0; i < quan.value; i++){
+        
         cupcakeOrder.push(
             {
                 "name": cupcakeName.value,
                 "flavor": flavorImgEl.name,
                 "frosting": frostingImgEl.name,
-                "filling": frostingImgEl.name,
-                "toppings": toppingIDArray
-            });}
+                "filling": fillingImgEl.getAttribute("name"),
+                "toppings": toppingIDArray,
+                "quantity": quan.value
+
+            });
+
         // appends the text-node to the newly-created p element:
         p.appendChild(document.createTextNode(flavorChoice + " x " + quan.value));
         newCupcakeListItem.appendChild(cupcakeListValue);
@@ -470,6 +473,7 @@ function toggleWhenFavClicked(e){
         orderingList.appendChild(newCupcakeListItem);
         removeButton.addEventListener("click", removeItem, true);
         newCupcakeListItem.appendChild(removeButton);
+        toppingIDArray = [];
     }
     });
     function removeItem(e) {
