@@ -383,6 +383,18 @@ function toggleWhenFavClicked(e){
         var p = document.createElement('alt'),
         // creates a new text-node:
         text = document.createTextNode(cupcakeName.value);
+        var request = new XMLHttpRequest();
+        var passing = 'CakeID=' + flavorImgEl.name + '&fillingID=' + fillingImgEl.getAttribute("name") + '&frostingID=' + frostingImgEl.name + '&favoriteName=' + cupcakeName.value + '&toppingsID=' + toppingChoices; 
+        request.open("POST", 'addFavorite.php', true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(passing);
+        request.onreadystatechange = function(e) {
+
+            if(request.readyState === 4){
+                //save the response from server
+                generateListfav(favList, 'getFavorites.php');
+            }}
+
         favoriteObjects.push(
    {
        "name": cupcakeName.value,
@@ -454,6 +466,7 @@ function toggleWhenFavClicked(e){
         var filling = document.createTextNode(fillingChoice);
         var toppings = document.createTextNode(toppingChoices.slice(0, toppingChoices.length));
         // Add some new cupcake order object, we need unqiue identifier for each order though
+        
         
         cupcakeOrder.push(
             {
