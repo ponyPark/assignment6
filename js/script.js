@@ -1,4 +1,4 @@
-/*BAM Software CSS for CustomCupcakes
+/*BAM Software JS for CustomCupcakes
 October, 2013*/
 function init() {
     var flavorList = document.getElementById("flavor");
