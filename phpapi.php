@@ -97,18 +97,22 @@ class phpapi {
         {
             return false;
         }
-        //Changes all values in toppingsList to (favoiteID, value) where value is a specific topping    
-        foreach ($toppingsList as &$value)
-        {   
-            $value = "('$favoriteID','$value')";
-        }
-        //Query to insert all toppings into FavoriteToppings 
-        //(with magical implode to concatenate all (favoriteID, value)'s from toppingsList with a comma.           
-        $query = "INSERT INTO FavoriteToppings(FavoriteID, ToppingsID) VALUES " . implode(",", $toppingsList);
-        if(!mysql_query($query))
+        
+        if(count($toppingsList)!=0)
         {
-            return false;
-        }                   
+            //Changes all values in toppingsList to (favoiteID, value) where value is a specific topping    
+            foreach ($toppingsList as &$value)
+            {   
+                $value = "('$favoriteID','$value')";
+            }
+            //Query to insert all toppings into FavoriteToppings 
+            //(with magical implode to concatenate all (favoriteID, value)'s from toppingsList with a comma.           
+            $query = "INSERT INTO FavoriteToppings(FavoriteID, ToppingsID) VALUES " . implode(",", $toppingsList);
+            if(!mysql_query($query))
+            {
+                return false;
+            }       
+        }            
         return true;
     }
         
@@ -245,44 +249,46 @@ class phpapi {
     
 
     
-    public function addOrder($orderArray)
+    public function addOrder($orderJSON)
     {
-        //Not complete yet.
-        /*
-        if (empty($orderArray)) return false;
+
+        if (empty($orderJSON)) return false;
         $success = true;
 
         //Retrieve the values from the session and the post. 
         $userID = $_SESSION['userID'];
 
         //Read the JSON.
-        $json = (array) json_decode($orderArray);
-        var_dump($json);
+        $order = (array) json_decode($orderJSON);
 
-        // Loop through each order
-        foreach ($json as $table => $data)
+        //Get the next order id.
+        $orderStatus = mysql_fetch_assoc(mysql_query("SHOW TABLE STATUS LIKE 'CupcakeOrders'"));
+        $orderID = $orderStatus['Auto_increment'];
+
+        //Make a query to add the order, excluding the toppings.
+        $query = "INSERT INTO CupcakeOrders(UserID, Quantity, CakeID, FillingID,
+            FrostingID) VALUES('$userID','" . $order['quantity'] . "','" .
+            $order['cake'] . "','" . $order['filling'] . "','" . $order['frosting'] . "')";
+        if(!mysql_query($query))
+            return false;
+
+        $toppingsList = (array) $order['toppings'];
+        if(count($toppingsList)!=0)
         {
-            // $orderStatus = mysql_fetch_assoc(mysql_query("SHOW TABLE STATUS LIKE 'CupcakeOrders'"));
-            // $orderID = $orderStatus['Auto_increment'];
-
-
-            // Loop through all the rows in each table
-            foreach ($data as &$row)
-            {
-                // Convert to an array, then add an index to the array.
-                $row = (array) $row;
-                array_unshift($row, $index);
-                $index++;
-
-                // Add the row to the database.
-                if (!addToDatabase($row, ucfirst($table)))
-                {
-                    $success = false;
-                    break;
-                }
+            //Changes all values in the toppings array to (orderID, value) where value is a specific topping    
+            foreach ($toppingsList as &$value)
+            {   
+                $value = "('$orderID','$value')";
             }
-        } 
-        */
+            //Query to insert all toppings into OrderToppings 
+            //(with magical implode to concatenate all (orderID, value)'s from toppingsList with a comma.           
+            $query = "INSERT INTO OrderToppings(OrderID, ToppingsID) VALUES " . implode(",", $toppingsList);
+            if(!mysql_query($query))
+            {
+                return false;
+            } 
+        }                  
+        return true;
  
     }
 
