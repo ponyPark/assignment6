@@ -375,8 +375,13 @@ function toggleWhenFavClicked(e){
     var saveOverlay = document.getElementById("saveFavorite");
     saveOverlay.addEventListener("click", function () {
         
+        
         var cupcakeName = document.getElementById("cupcakeName");
         //create new li element
+        if(cupcakeName.value === ""){
+            alert('Must Enter Name');
+            return;
+        }
         var newCupcakeListItem = document.createElement("li");
         //create new text node
         var cupcakeListValue = document.createElement("img");
@@ -387,6 +392,7 @@ function toggleWhenFavClicked(e){
         var request = new XMLHttpRequest();
         var toppingArrayIDPass = new Array();
         
+
         var passing = 'CakeID=' + flavorImgEl.name + '&fillingID=' + fillingImgEl.getAttribute("name") + '&frostingID=' + frostingImgEl.name + '&favoriteName=' + cupcakeName.value + '&toppingsID='; 
         for( var i = 0; i< toppingChoices.length; i++){
 

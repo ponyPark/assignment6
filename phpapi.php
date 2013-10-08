@@ -32,8 +32,7 @@ class phpapi
             '$city','$state','$zip','$auth')";
         if(!mysql_query($query))
         {
-            // An error will occur if someone registers with the same email.
-            die("Error: " . mysql_error());
+            return false;
         }
         else
         {
