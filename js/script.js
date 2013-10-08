@@ -426,6 +426,7 @@ function toggleWhenFavClicked(e){
 
   
         //close the dialog
+        toppingChoices = [];
         el = document.getElementById("overlay");
                 el.style.visibility = "hidden";
     });
@@ -457,6 +458,10 @@ function toggleWhenFavClicked(e){
     order.addEventListener("click", function () {
         //As of now prints out stored information of cupcake order
         var cupCakesOrdered = 0;
+        if(cupcakeOrder.length === 0){
+            alert('Please add a cupcake before ordering');
+            return;
+        }
 
         for (var i = 0; i < cupcakeOrder.length; i++){
 
