@@ -236,9 +236,9 @@ class phpapi
         return json_encode(array('favtoppings' => $rows));   
     }
 
-    public function addOrder($orderJSON)
+    public function addOrder()
     {
-
+        $orderJSON = $_POST['orderArray'];
         if (empty($orderJSON)) return false;
 
         // Retrieve the values from the session and the post. 
@@ -246,6 +246,7 @@ class phpapi
 
         // Read the JSON.
         $order = (array) json_decode($orderJSON);
+        echo($order['']);
 
         // Get the next order id.
         $orderStatus = mysql_fetch_assoc(mysql_query("SHOW TABLE STATUS LIKE 'CupcakeOrders'"));
@@ -254,7 +255,7 @@ class phpapi
         // Make a query to add the order, excluding the toppings.
         $query = "INSERT INTO CupcakeOrders(UserID, Quantity, CakeID, FillingID,
             FrostingID) VALUES('$userID','" . $order['quantity'] . "','" .
-            $order['cake'] . "','" . $order['filling'] . "','" . 
+            $order['flavor'] . "','" . $order['filling'] . "','" . 
             $order['frosting'] . "')";
         if(!mysql_query($query))
             return false;

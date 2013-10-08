@@ -393,7 +393,6 @@ function toggleWhenFavClicked(e){
             toppingArrayIDPass.push(toppingChoices[i].name);
 
         }
-        //passing += ')'
         var toppingArrayPass = JSON.stringify(toppingArrayIDPass)
         passing += toppingArrayPass;
         console.log(passing);
@@ -451,8 +450,34 @@ function toggleWhenFavClicked(e){
     var order = document.getElementById("order");
     order.addEventListener("click", function () {
         //As of now prints out stored information of cupcake order
-        for (var i = 0; i < cupcakeOrder.length; i++)
-            console.log(cupcakeOrder[i]);
+        var cupCakesOrdered = 0;
+
+        for (var i = 0; i < cupcakeOrder.length; i++){
+
+        console.log(cupcakeOrder[i]);
+        var cupCakeOrderToPass = cupcakeOrder[i];
+        cupCakesOrdered += parseInt((cupCakeOrderToPass.quantity), 10);
+        var request = new XMLHttpRequest();
+        var toppingArrayIDPass = new Array();
+        
+        var passing = 'orderArray='; 
+        var ArrayToPass = JSON.stringify(cupCakeOrderToPass)
+        passing += ArrayToPass;
+        //console.log(passing);
+        request.open("POST", 'addOrder.php', false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(passing);
+       // if(request.readyState === 4){
+                //save the response from server
+         // }
+
+        }
+        cupCakesOrdered *= 3;
+        alert('Your total is $' + cupCakesOrdered + '.00\nPlease have payment ready when picking up your order');
+        window.location.href = 'order.php';
+            
+
+            
     });
     //Removes item from ordering list
     var removeButton;
