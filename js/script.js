@@ -426,7 +426,7 @@ function toggleWhenFavClicked(e){
 
   
         //close the dialog
-        toppingChoices = [];
+        toppingIDArray = [];
         el = document.getElementById("overlay");
                 el.style.visibility = "hidden";
     });
