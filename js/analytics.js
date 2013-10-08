@@ -1,6 +1,10 @@
 /*BAM Software JS for CustomCupcakes Analytics Page
 October, 2013*/
+
 function init() {
+	//$("head").append('<script src="js/rgraph/RGraph.common.core.js"></script>');
+	//$("head").append('<script src="js/rgraph/RGraph.pie.js"></script>');
+	//$("head").append('<script src="js/rgraph/RGraph.bar.js"></script>');
 	var json;
 	var url = './SalesInformation.php';
 
@@ -24,7 +28,6 @@ function init() {
 
           
 //        }
-//	}
 }
 
 function createPie(name, data) {
@@ -32,7 +35,8 @@ function createPie(name, data) {
 	console.log(data);
 	canvas.id = name;
 	canvas.width = "400";
-	canvas.height = "400";
+	canvas.height = "200";
+	canvas.display = "block";
 	document.body.appendChild(canvas);
 
 	var flavors = new Array();
@@ -46,12 +50,39 @@ function createPie(name, data) {
 	console.log(flavors);
 	console.log(totals);
 
-	
-
+	var pie = new RGraph.Pie(name, totals)
+		.Set('chart.labels', flavors)
+		.Set('chart.title', name)
+		.Set('chart.text.size', 8)
+		.Draw();
 }		
 
 function createBar(name, data) {
 	canvas = document.createElement("canvas");
 	console.log(data);
-}
+
+	canvas.id = name;
+	canvas.width = "400";
+	canvas.height = "200";
+	canvas.display = "block";
+	document.body.appendChild(canvas);
+
+	var flavors = new Array();
+	var totals = new Array();
+
+	for (var i = 0, len = data.length; i < len; i++) {
+		flavors[i] = data[i].Flavor;
+		totals[i] = parseInt(data[i].Total, 10);
+	}
+
+	console.log(flavors);
+	console.log(totals);
+
+	var bar = new RGraph.Bar(name, totals)
+		.Set('chart.labels', flavors)
+		.Set('chart.title', name)
+		.Set('chart.text.size', 8)
+		.Draw();
+}		
+
 window.onload = init;

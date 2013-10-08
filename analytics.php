@@ -14,6 +14,10 @@
     	<script src="js/rgraph/RGraph.common.core.js"></script>
     	<script src="js/rgraph/RGraph.bar.js"></script>
     	<script src="js/rgraph/RGraph.pie.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+</script>
+<
+
 
 	</head>
 
@@ -21,6 +25,5 @@
 		<header>
 			<h1>Custom Cupcakes Analytics</h1>
 		</header>
-
 	</body>
 </html>
