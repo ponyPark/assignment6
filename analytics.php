@@ -10,10 +10,17 @@
     	<meta charset="UTF-8">
     	<link rel="stylesheet" href="css/style.css" type="text/css">
     	<link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
-    	<script type="text/javascript" src="js/script.js"></script>
+    	<script type="text/javascript" src="js/analytics.js"></script>
+    	<script src="js/rgraph/RGraph.common.core.js"></script>
+    	<script src="js/rgraph/RGraph.bar.js"></script>
+    	<script src="js/rgraph/RGraph.pie.js"></script>
+
 	</head>
 
 	<body>
-		
+		<header>
+			<h1>Custom Cupcakes Analytics</h1>
+		</header>
+
 	</body>
 </html>
