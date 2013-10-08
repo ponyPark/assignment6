@@ -1,9 +1,6 @@
 <?
 class phpapi
 {
-    /**
-     * Constructor for phpapi. It starts a session and connects to the database.
-     */
     function phpapi()
     {
         session_start();
@@ -15,11 +12,9 @@ class phpapi
         or die("Unable to select database: " . mysql_error());
     }
 
-    /**
-     * Add a user to the system. Used with the registration form.
-     */
     public function addUser()
-    {
+    {   
+        //add a user to the system
         $mailList = $_POST['mailingList'];
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
@@ -37,16 +32,11 @@ class phpapi
             '$city','$state','$zip','$auth')";
         if(!mysql_query($query))
         {
-            // An error will occur if someone registers with the same email.
-            die("Error: " . mysql_error());
+            return false;
         }
         else
         {
-            //a user will be logged in if this variable is true
-            $_SESSION['logged'] = true;
-            //passing on the user's email for next page to use
-            $_SESSION['userEmail'] = $email;
-            header ('Location: order.php'); 
+            return; 
         }
     
     }
