@@ -8,18 +8,20 @@ function init() {
 	var json;
 	var url = './SalesInformation.php';
 
-/**	var request = new XMLHttpRequest();
+	var request = new XMLHttpRequest();
 	request.open("GET", url, true);
     request.send();
     request.onreadystatechange = function(e) {
 
        	if(request.readyState === 4){
-*/            //save the response from server
-            var json = {"salesinfo":[
+            //save the response from server
+            var json = request.responseText;
+            /**var json = {"salesinfo":[
             			{"cakesales":[{"Flavor":"Banana","Total":"1"},{"Flavor":"Dark Chocolate","Total":"1"}]},
             			{"fillingsales":[{"Flavor":"Blackberry","Total":"1"},{"Flavor":"Strawbery","Total":"1"}]},
             			{"frostingsales":[{"Flavor":"Buttered Popcorn","Total":"1"},{"Flavor":"Strawberry Cremem","Total":"1"}]},
             			{"toppingsales":[{"Flavor":"Craisins","Total":"1"},{"Flavor":"M&M's","Total":"1"},{"Flavor":"Maraschino Cherries","Total":"1"}]}]};
+            */
             	createPie("cakesales", json.salesinfo[0].cakesales);
             	createPie("fillingsales", json.salesinfo[1].fillingsales);
             	createPie("frostingsales", json.salesinfo[2].frostingsales);
