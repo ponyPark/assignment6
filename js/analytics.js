@@ -15,7 +15,8 @@ function init() {
 
        	if(request.readyState === 4){
             //save the response from server
-            var json = request.responseText;
+            var json = JSON.parse(request.responseText);
+            console.log(json);
             /**var json = {"salesinfo":[
             			{"cakesales":[{"Flavor":"Banana","Total":"1"},{"Flavor":"Dark Chocolate","Total":"1"}]},
             			{"fillingsales":[{"Flavor":"Blackberry","Total":"1"},{"Flavor":"Strawbery","Total":"1"}]},
@@ -29,7 +30,8 @@ function init() {
 
 
           
-//        }
+        }
+}
 }
 
 function createPie(name, data) {
