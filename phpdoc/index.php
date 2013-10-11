@@ -1,3 +1,11 @@
+<?php
+    $ipaddress = substr((string)$_SERVER['REMOTE_ADDR'], 0,7);
+    if($ipaddress != "129.119")
+    {
+        die("The phpapi documentation cannot be shown on non-SMU networks.");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
