@@ -485,7 +485,7 @@ function toggleWhenFavClicked(e){
         }
         cupCakesOrdered *= 3;
         alert('Your total is $' + cupCakesOrdered + '.00\nPlease have payment ready when picking up your order');
-        window.location.href = 'order.php';
+        window.location.href = 'analytics.php';
             
 
             
