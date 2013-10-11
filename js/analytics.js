@@ -18,7 +18,7 @@ function init() {
             			{"cakesales":[{"Flavor":"Banana","Total":"20"},{"Flavor":"Dark Chocolate","Total":"10"},{"Flavor":"Dark Chocolate","Total":"1"},{"Flavor":"Dark Chocolate","Total":"1"},{"Flavor":"Dark Chocolate","Total":"1"}]},
             			{"fillingsales":[{"Flavor":"Blackberry","Total":"1"},{"Flavor":"Strawbery","Total":"1"}]},
             			{"frostingsales":[{"Flavor":"Buttered Popcorn","Total":"1"},{"Flavor":"Strawberry Cremem","Total":"1"}]},
-            			{"toppingsales":[{"Flavor":"Craisins","Total":"1"},{"Flavor":"M&M's","Total":"1"},{"Flavor":"Maraschino Cherries","Total":"1"},{"Flavor":"Maraschino Cherries","Total":"1"},{"Flavor":"Maraschino Cherries","Total":"1"},{"Flavor":"Maraschino Cherries","Total":"1"}]}]};
+            			{"toppingsales":[{"Flavor":"Craisins","Total":"1"},{"Flavor":"M&M's","Total":"3"},{"Flavor":"Maraschino Cherries","Total":"6"},{"Flavor":"Maraschino Cherries","Total":"4"},{"Flavor":"Maraschino Cherries","Total":"7"},{"Flavor":"Maraschino Cherries","Total":"1"}]}]};
             
             	createPie('cakesales', json.salesinfo[0].cakesales);
             	createPie("fillingsales", json.salesinfo[1].fillingsales);
@@ -31,9 +31,9 @@ function init() {
 
 function createPie(name, data) {
 	var pieData = new Array();
+	
 	for (var i = 0, len = data.length; i < len; i++)
 		pieData[i] = [data[i].Flavor, parseInt(data[i].Total, 10)];
-	console.log(pieData);
 
 	var chart = new Highcharts.Chart({
         chart: {
@@ -61,10 +61,6 @@ function createPie(name, data) {
 };
 
 function createBar(name, data) {
-	console.log(data);
-	var pageWidth = $(window).width();
-	document.getElementById(name).width = pageWidth;
-
 	var flavors = new Array();
 	var totals = new Array();
 
@@ -73,13 +69,34 @@ function createBar(name, data) {
 		totals[i] = parseInt(data[i].Total, 10);
 	}
 
-	console.log(flavors);
-	console.log(totals);
-
-	var bar = new RGraph.Bar(name, totals)
-		.Set('chart.labels', flavors)
-		.Set('chart.text.size', 8)
-		.Draw();
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: name,
+            type: 'column',
+            backgroundColor: 'rgba(255, 255, 255, 0)',
+            plotBorderWidth: null,
+            plotShadow: false,
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: flavors,
+            title: {text: 'Toppings'}
+        },
+        yAxis: {
+        	title: {text: 'Total Orders'}
+        },
+        title: {
+            text: null
+        },
+ 		legend: {
+ 			enabled: false
+ 		},	
+        series: [{
+            data: totals
+        }]    
+    });
 };	
 
 window.onload = init;
