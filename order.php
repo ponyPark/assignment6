@@ -1,14 +1,15 @@
 <!--Ordering Page for CustomCupcakes by BAM Software-->
-<!--Ordering Page for CustomCupcakes by BAM2 Software-->
+
+<?php
+    session_start();
+    // Stop displaying the page if the user is not logged in.
+    if ($_SESSION['logged'] !== true)
+        die ("You must be logged in to see this page.");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <? 
-    session_start();
-    //will be there if the user has successfully loggin into the system
-
-
-    ?>
     <title>CustomCupcakes Homepage</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css" type="text/css">

@@ -67,11 +67,11 @@ class phpapi
         $query = "select * from Users where Email = '";
         $query = $query . $_POST['email'] . "' and Password = '" . $pw ."'";
         $result = mysql_query($query);
-        $info = mysql_fetch_array( $result );
-        if(!mysql_query($query))
-            return false;
         if(mysql_num_rows($result) == 0)
-            header ('Location: error.html');
+            header ('Location: index.php?login=false');
+
+        $info = mysql_fetch_array( $result );
+
         $ipaddress = substr((string)$_SERVER['REMOTE_ADDR'], 0,7);
         
         if($info['Privilege'] == 1 && $ipaddress == "129.119")
